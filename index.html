@@ -335,19 +335,15 @@
     max-width:460px; margin-bottom:26px;
   }
 
-  .order-toggle{
-    display:inline-flex; background:#fff; border:1px solid var(--light-3);
-    border-radius:100px; padding:5px; margin-bottom:18px;
+  .delivery-badge{
+    display:inline-flex; align-items:center; gap:9px; background:#fff; border:1px solid var(--light-3);
+    border-radius:100px; padding:12px 22px; margin-bottom:18px;
     box-shadow:0 6px 18px rgba(180,90,20,.10);
+    font-family:var(--font-display); font-weight:700; font-size:14.5px; color:var(--ink);
   }
-  .order-toggle button{
-    font-family:var(--font-display); font-weight:700; font-size:14.5px;
-    padding:11px 26px; border-radius:100px; background:transparent; color:var(--ink-soft);
-    transition:all .2s ease;
-  }
-  .order-toggle button.active{
-    background:linear-gradient(160deg, var(--orange-light), var(--orange));
-    color:#fff; box-shadow:0 6px 16px rgba(246,75,1,.4);
+  .delivery-badge .dot{
+    width:9px; height:9px; border-radius:50%; background:#3CB043; flex-shrink:0;
+    box-shadow:0 0 0 4px rgba(60,176,67,.18);
   }
 
   .search-bar{
@@ -591,9 +587,9 @@
         <h1>Hamburguesas que no vienen a pasar <span>desapercibidas</span>. 🍔🚀</h1>
         <p class="tagline">Mucho sabor, combinaciones que tientan y una experiencia fuera de este mundo.<br>¿Ya elegiste la tuya? Pedí la tuya y despegá. 🛸</p>
 
-        <div class="order-toggle">
-          <button class="active">Retirar</button>
-          <button>Delivery</button>
+        <div class="delivery-badge">
+          <span class="dot"></span>
+          🛵 Solo delivery a Florencio Varela y alrededores
         </div>
 
         <div class="search-bar">
@@ -889,49 +885,68 @@
   overlay.addEventListener('click', closeDrawer);
   function closeDrawer(){ drawer.classList.remove('open'); overlay.classList.remove('open'); }
 
-  document.querySelectorAll('.order-toggle button').forEach(btn=>{
-    btn.addEventListener('click', ()=>{
-      document.querySelectorAll('.order-toggle button').forEach(b=>b.classList.remove('active'));
-      btn.classList.add('active');
-    });
-  });
-
   /* ===================== PRODUCT DATA ===================== */
+  /* precio: null = todavía no cargado (se muestra "Precio pronto").
+     Cuando tengas los precios reales, reemplazá cada "price: null" por el monto en pesos (ej: price: 9000). */
   const TOPPINGS = [
-    {id:'barbacoa', name:'Barbacoa', icon:'🥫'},
-    {id:'mayonesa', name:'Mayonesa', icon:'🥄'},
-    {id:'cheddar', name:'Cheddar', icon:'🧀'},
-    {id:'ketchup', name:'Ketchup', icon:'🍅'},
-    {id:'cebollacrispy', name:'Cebolla crispy', icon:'🧅'},
-    {id:'bacon', name:'Bacon', icon:'🥓'},
+    {id:'barbacoa', name:'Barbacoa', icon:'🥫', price:null},
+    {id:'mayonesa', name:'Mayonesa', icon:'🥄', price:null},
+    {id:'cheddar', name:'Cheddar', icon:'🧀', price:null},
+    {id:'ketchup', name:'Ketchup', icon:'🍅', price:null},
+    {id:'cebollacrispy', name:'Cebolla crispy', icon:'🧅', price:null},
+    {id:'bacon', name:'Bacon', icon:'🥓', price:null},
   ];
   const EXTRAS = [
-    {id:'medallon', name:'Medallón de carne extra', icon:'🥩'},
-    {id:'huevo', name:'Huevo frito', icon:'🍳'},
-    {id:'banocheddar', name:'Baño de cheddar', icon:'🧀'},
-    {id:'baconextra', name:'Bacon extra', icon:'🥓'},
+    {id:'medallon', name:'Medallón de carne extra', icon:'🥩', price:null},
+    {id:'huevo', name:'Huevo frito', icon:'🍳', price:null},
+    {id:'banocheddar', name:'Baño de cheddar', icon:'🧀', price:null},
+    {id:'baconextra', name:'Bacon extra', icon:'🥓', price:null},
   ];
   const SIZES = [
-    {id:'chico', label:'Chico', note:'Individual'},
-    {id:'mediano', label:'Mediano', note:'Más papas'},
-    {id:'grande', label:'Grande', note:'Para compartir'},
+    {id:'chico', label:'Chico', note:'Individual', priceMod:null},
+    {id:'mediano', label:'Mediano', note:'Más papas', priceMod:null},
+    {id:'grande', label:'Grande', note:'Para compartir', priceMod:null},
   ];
 
   const PRODUCTS = {
-    b1:{name:'Caramel Burger + Papas Fritas', emoji:'🍔', type:'burger', ingredients:['Pan de papa','Cebolla caramelizada','Bacon','Barbacoa','Cheddar']},
-    b2:{name:'Crispy Burger + Papas Fritas', emoji:'🍔', type:'burger', ingredients:['Pan de papa','Cebolla crispy','Barbacoa','Cheddar','Carne']},
-    b3:{name:'Cheese Burger + Papas Fritas', emoji:'🧀', type:'burger', ingredients:['Pan de papa','Carne','Cheddar']},
-    b4:{name:'Beacon Burger + Papas Fritas', emoji:'🥓', type:'burger', ingredients:['Pan de papa','Carne','Cheddar','Bacon']},
-    b5:{name:'Americana Burger + Papas Fritas', emoji:'🍳', type:'burger', ingredients:['Pan de papa','Carne','Cheddar','Bacon','Huevo','Papas']},
-    p1:{name:'Caja de Papas Fritas', emoji:'🍟', type:'papas', ingredients:['Papas fritas con sal','Cheddar','Bacon'], note:'Elegí hasta 2 toppings incluidos, el resto tiene costo extra.'},
-    c1:{name:'Combo Cosmos', emoji:'🌌', type:'combo', ingredients:['Hamburguesa a elección','Papas fritas','Cheddar','Bacon'], burgerChoice:true},
-    c2:{name:'Combo Cosmos Duo', emoji:'🛸', type:'combo', ingredients:['2 hamburguesas a elección','2 papas fritas','2 birras o Coca-Cola 1.5L'], burgerChoice:true, duo:true},
-    d1:{name:'Manaos 1.5L', emoji:'🧃', type:'bebida', flavorChoice:['Pomelo','Naranja','Cola']},
-    d2:{name:'Sprite 1.5L', emoji:'🥤', type:'bebida'},
-    d3:{name:'Fanta 1.5L', emoji:'🍊', type:'bebida'},
-    d4:{name:'Coca-Cola 1.5L', emoji:'🥤', type:'bebida'},
+    b1:{name:'Caramel Burger + Papas Fritas', emoji:'🍔', type:'burger', price:null, ingredients:['Pan de papa','Cebolla caramelizada','Bacon','Barbacoa','Cheddar']},
+    b2:{name:'Crispy Burger + Papas Fritas', emoji:'🍔', type:'burger', price:null, ingredients:['Pan de papa','Cebolla crispy','Barbacoa','Cheddar','Carne']},
+    b3:{name:'Cheese Burger + Papas Fritas', emoji:'🧀', type:'burger', price:null, ingredients:['Pan de papa','Carne','Cheddar']},
+    b4:{name:'Beacon Burger + Papas Fritas', emoji:'🥓', type:'burger', price:null, ingredients:['Pan de papa','Carne','Cheddar','Bacon']},
+    b5:{name:'Americana Burger + Papas Fritas', emoji:'🍳', type:'burger', price:null, ingredients:['Pan de papa','Carne','Cheddar','Bacon','Huevo','Papas']},
+    p1:{name:'Caja de Papas Fritas', emoji:'🍟', type:'papas', price:null, ingredients:['Papas fritas con sal','Cheddar','Bacon'], note:'Elegí hasta 2 toppings incluidos, el resto tiene costo extra.'},
+    c1:{name:'Combo Cosmos', emoji:'🌌', type:'combo', price:null, ingredients:['Hamburguesa a elección','Papas fritas','Cheddar','Bacon'], burgerChoice:true},
+    c2:{name:'Combo Cosmos Duo', emoji:'🛸', type:'combo', price:null, ingredients:['2 hamburguesas a elección','2 papas fritas','2 birras o Coca-Cola 1.5L'], burgerChoice:true, duo:true},
+    d1:{name:'Manaos 1.5L', emoji:'🧃', type:'bebida', price:null, flavorChoice:['Pomelo','Naranja','Cola']},
+    d2:{name:'Sprite 1.5L', emoji:'🥤', type:'bebida', price:null},
+    d3:{name:'Fanta 1.5L', emoji:'🍊', type:'bebida', price:null},
+    d4:{name:'Coca-Cola 1.5L', emoji:'🥤', type:'bebida', price:null},
   };
   const BURGER_NAMES = ['b1','b2','b3','b4','b5'].map(id => ({id, name: PRODUCTS[id].name.replace(' + Papas Fritas','')}));
+
+  function money(n){
+    return '$ ' + n.toLocaleString('es-AR');
+  }
+
+  /* calcula el precio unitario de un item si TODOS sus componentes tienen precio cargado; si falta alguno, devuelve null */
+  function computeUnitPrice(productId, sizeId, toppingIds, extraIds){
+    const p = PRODUCTS[productId];
+    if(p.price == null) return null;
+    let total = p.price;
+    const size = SIZES.find(s=>s.id===sizeId);
+    if(size && size.priceMod){ total += size.priceMod; }
+    for(const tid of toppingIds){
+      const t = TOPPINGS.find(x=>x.id===tid);
+      if(t.price == null) return null;
+      total += t.price;
+    }
+    for(const eid of extraIds){
+      const e = EXTRAS.find(x=>x.id===eid);
+      if(e.price == null) return null;
+      total += e.price;
+    }
+    return total;
+  }
 
   let cart = [];
   let currentDraft = null;
@@ -1065,11 +1080,12 @@
         </div>
       </div>
       <div class="modal-footer">
-        <span class="price-note">Precio a confirmar</span>
+        <span class="price-note" id="modalPriceNote">Precio a confirmar</span>
         <button class="modal-add-btn" onclick="confirmAddToCart()">Agregar al carrito</button>
       </div>`;
 
     document.getElementById('modalBox').innerHTML = html;
+    updateModalPriceNote();
   }
 
   function setSize(id){ currentDraft.size = id; renderModal(); }
@@ -1080,14 +1096,23 @@
   function toggleTopping(id){
     const i = currentDraft.toppings.indexOf(id);
     if(i>-1) currentDraft.toppings.splice(i,1); else currentDraft.toppings.push(id);
+    updateModalPriceNote();
   }
   function toggleExtra(id){
     const i = currentDraft.extras.indexOf(id);
     if(i>-1) currentDraft.extras.splice(i,1); else currentDraft.extras.push(id);
+    updateModalPriceNote();
   }
   function changeQty(delta){
     currentDraft.qty = Math.max(1, currentDraft.qty + delta);
     document.getElementById('qtyNum').textContent = currentDraft.qty;
+    updateModalPriceNote();
+  }
+  function updateModalPriceNote(){
+    const note = document.getElementById('modalPriceNote');
+    if(!note) return;
+    const unit = computeUnitPrice(currentDraft.productId, currentDraft.size, currentDraft.toppings, currentDraft.extras);
+    note.textContent = unit!=null ? money(unit*currentDraft.qty) : 'Precio a confirmar';
   }
 
   function confirmAddToCart(){
@@ -1105,12 +1130,15 @@
     if(currentDraft.toppings.length) details.push('Toppings: ' + currentDraft.toppings.map(id=>TOPPINGS.find(t=>t.id===id).name).join(', '));
     if(currentDraft.extras.length) details.push('Extras: ' + currentDraft.extras.map(id=>EXTRAS.find(e=>e.id===id).name).join(', '));
 
+    const unitPrice = computeUnitPrice(currentDraft.productId, currentDraft.size, currentDraft.toppings, currentDraft.extras);
+
     cart.push({
       productId: currentDraft.productId,
       name: p.name,
       emoji: p.emoji,
       qty: currentDraft.qty,
       details: details,
+      unitPrice: unitPrice, // null si algún componente todavía no tiene precio cargado
     });
 
     renderCart();
@@ -1131,6 +1159,17 @@
     cart.splice(idx,1);
     renderCart();
   }
+
+  function cartGrandTotal(){
+    if(cart.length===0) return null;
+    let total = 0;
+    for(const item of cart){
+      if(item.unitPrice == null) return null; // falta algún precio -> no se puede sumar todavía
+      total += item.unitPrice * item.qty;
+    }
+    return total;
+  }
+
   function renderCart(){
     const list = document.getElementById('cartItemsList');
     const badge = document.getElementById('cartBadge');
@@ -1143,6 +1182,9 @@
     }
 
     document.getElementById('checkoutBtn').disabled = cart.length===0;
+
+    const grandTotal = cartGrandTotal();
+    document.getElementById('cartTotalLabel').textContent = grandTotal!=null ? money(grandTotal) : (cart.length ? 'Precio pronto' : 'Precio pronto');
 
     if(cart.length===0){
       list.innerHTML = `<div class="cart-empty"><span class="emoji">🛸</span>Todavía no agregaste nada.<br>¡Elegí tu combo favorito!</div>`;
@@ -1158,7 +1200,9 @@
           ${item.details.map(d=>`<p>${d}</p>`).join('')}
           <div class="price-row">
             <span class="qty-badge">x${item.qty}</span>
-            <span style="font-size:12px; color:var(--ink-soft); font-style:italic;">Precio pronto</span>
+            <span style="font-size:12px; color:var(--ink-soft); font-style:italic;">
+              ${item.unitPrice!=null ? money(item.unitPrice*item.qty) : 'Precio pronto'}
+            </span>
           </div>
         </div>
       </div>`).join('');
@@ -1166,12 +1210,15 @@
 
   function checkout(){
     if(cart.length===0) return;
-    let msg = '¡Hola Cosmos Burger! 🚀 Quiero hacer este pedido:%0A%0A';
+    let msg = '¡Hola Cosmos Burger! 🚀 Quiero hacer este pedido para delivery:%0A%0A';
     cart.forEach(item => {
-      msg += `• x${item.qty} ${item.name}%0A`;
+      const lineTotal = item.unitPrice!=null ? money(item.unitPrice*item.qty) : 'Precio a confirmar';
+      msg += `• x${item.qty} ${item.name} — ${lineTotal}%0A`;
       item.details.forEach(d => msg += `   - ${d}%0A`);
     });
-    msg += '%0APrecios a confirmar. ¡Gracias!';
+    const grandTotal = cartGrandTotal();
+    msg += '%0A' + (grandTotal!=null ? ('*Total: ' + money(grandTotal) + '*') : '*Total: a confirmar*');
+    msg += '%0A%0A📍 Mi dirección de entrega es: ';
     window.open('https://wa.me/5492216161682?text=' + msg, '_blank');
   }
 

@@ -242,7 +242,7 @@
   .chip-row{display:flex; gap:14px; align-items:center;}
   .chip{
     display:flex; align-items:center; gap:10px; background:#fff; border:1.5px solid #F0DCC4;
-    border-radius:100px; padding:8px 20px 8px 8px; flex:1;
+    border-radius:100px; padding:8px 20px 8px 8px; flex:1; text-decoration:none;
     transition:transform .2s ease, box-shadow .2s ease, border-color .2s ease;
   }
   .chip:hover{transform:translateY(-3px); box-shadow:var(--shadow-card); border-color:var(--orange-light);}
@@ -292,6 +292,21 @@
     transition:transform .15s ease;
   }
   .add-btn:hover{transform:scale(1.08);}
+  .amount.muted{font-family:var(--font-body); font-weight:600; font-style:italic; font-size:13px; color:var(--ink-soft);}
+  .add-btn[disabled]{opacity:.35; box-shadow:none; cursor:default; pointer-events:none;}
+  .section-sub{font-family:var(--font-body); font-weight:500; font-size:15px; color:var(--ink-soft); font-style:italic;}
+  .pop-grid-2{grid-template-columns:repeat(2,1fr);}
+
+  /* ---------- toppings / extras (addons) ---------- */
+  .addons{padding:44px 0 10px;}
+  .addons .head{margin-bottom:20px;}
+  .addon-row{display:flex; flex-wrap:wrap; gap:12px;}
+  .addon-pill{
+    background:#fff; border:1.5px solid #F0DCC4; border-radius:100px;
+    padding:12px 22px; font-family:var(--font-display); font-weight:700; font-size:14.5px; color:var(--ink);
+    transition:transform .2s ease, box-shadow .2s ease, border-color .2s ease;
+  }
+  .addon-pill:hover{transform:translateY(-3px); box-shadow:var(--shadow-card); border-color:var(--orange-light);}
 
   /* ---------- populares grid ---------- */
   .populares{padding:56px 0 10px;}
@@ -468,123 +483,203 @@
     <div class="wrap">
       <div class="head">
         <h2 class="section-title">Categorías</h2>
-        <a class="see-all" href="#suggestions">Ver menú completo →</a>
+        <a class="see-all" href="#hamburguesas">Ver menú completo →</a>
       </div>
       <div class="chip-row">
-        <div class="chip"><div class="thumb">🔥</div><span>Promos</span></div>
-        <div class="chip"><div class="thumb">🍔</div><span>Burgers</span></div>
-        <div class="chip"><div class="thumb">👽</div><span>Combo Astronauta</span></div>
-        <div class="chip"><div class="thumb">🥤</div><span>Bebidas</span></div>
-        <div class="chip"><div class="thumb">🍟</div><span>Acompañamientos</span></div>
-        <div class="chip-arrow">
-          <svg viewBox="0 0 24 24" width="16" height="16" fill="none"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </div>
+        <a class="chip" href="#hamburguesas"><div class="thumb">🍔</div><span>Hamburguesas</span></a>
+        <a class="chip" href="#papas"><div class="thumb">🍟</div><span>Papas Fritas</span></a>
+        <a class="chip" href="#combos"><div class="thumb">🌌</div><span>Combos</span></a>
+        <a class="chip" href="#toppings"><div class="thumb">🥫</div><span>Toppings</span></a>
+        <a class="chip" href="#extras"><div class="thumb">➕</div><span>Extras</span></a>
+        <a class="chip" href="#bebidas"><div class="thumb">🥤</div><span>Bebidas</span></a>
       </div>
     </div>
   </section>
 
-  <!-- suggestions -->
-  <section class="suggestions" id="suggestions">
+  <!-- hamburguesas -->
+  <section class="suggestions" id="hamburguesas">
     <div class="wrap">
       <div class="head">
-        <h2 class="section-title">Nuestras sugerencias</h2>
+        <h2 class="section-title">Hamburguesas</h2>
       </div>
 
       <div class="food-row">
         <div class="food-thumb bg-b">🍔</div>
         <div class="food-info">
-          <div class="rating"><svg viewBox="0 0 20 20" fill="currentColor"><path d="M10 1l2.6 5.9 6.4.6-4.8 4.3 1.4 6.2L10 14.9 4.4 18l1.4-6.2L1 7.5l6.4-.6z"/></svg> 5.0</div>
-          <h3>Cosmos Burger clásica</h3>
-          <p>Pan brioche, medallón de carne, queso cheddar, cebolla en cubos y salsa cósmica</p>
+          <h3>Caramel Burger + Papas Fritas</h3>
+          <p>Pan de papa, cebolla caramelizada, bacon, barbacoa y cheddar</p>
         </div>
         <div class="food-price">
-          <span class="amount">$ 9.000</span>
-          <button class="add-btn">+</button>
+          <span class="amount muted">Precio pronto</span>
+          <button class="add-btn" disabled>+</button>
         </div>
       </div>
 
       <div class="food-row">
-        <div class="food-thumb bg-c">🥓</div>
+        <div class="food-thumb bg-c">🍔</div>
         <div class="food-info">
-          <div class="rating"><svg viewBox="0 0 20 20" fill="currentColor"><path d="M10 1l2.6 5.9 6.4.6-4.8 4.3 1.4 6.2L10 14.9 4.4 18l1.4-6.2L1 7.5l6.4-.6z"/></svg> 5.0</div>
-          <h3>Meteorito Krispy</h3>
-          <p>Pan, carne, queso cheddar, cebolla crispy, salsa barbacoa y panceta</p>
+          <h3>Crispy Burger + Papas Fritas</h3>
+          <p>Pan de papa, cebolla crispy, barbacoa, cheddar y carne</p>
         </div>
         <div class="food-price">
-          <span class="amount">$ 9.500</span>
-          <button class="add-btn">+</button>
+          <span class="amount muted">Precio pronto</span>
+          <button class="add-btn" disabled>+</button>
         </div>
       </div>
 
       <div class="food-row">
-        <div class="food-thumb bg-d">🧀</div>
+        <div class="food-thumb bg-e">🧀</div>
         <div class="food-info">
-          <div class="rating"><svg viewBox="0 0 20 20" fill="currentColor"><path d="M10 1l2.6 5.9 6.4.6-4.8 4.3 1.4 6.2L10 14.9 4.4 18l1.4-6.2L1 7.5l6.4-.6z"/></svg> 5.0</div>
-          <h3>Triple Supernova</h3>
-          <p>Pan, carne x3, triple queso cheddar fundido y papas rústicas incluidas</p>
+          <h3>Cheese Burger + Papas Fritas</h3>
+          <p>Pan de papa, carne y cheddar</p>
         </div>
         <div class="food-price">
-          <span class="amount">$ 12.500</span>
-          <button class="add-btn">+</button>
+          <span class="amount muted">Precio pronto</span>
+          <button class="add-btn" disabled>+</button>
         </div>
       </div>
 
       <div class="food-row">
-        <div class="food-thumb bg-e">👽</div>
+        <div class="food-thumb bg-d">🥓</div>
         <div class="food-info">
-          <div class="rating"><svg viewBox="0 0 20 20" fill="currentColor"><path d="M10 1l2.6 5.9 6.4.6-4.8 4.3 1.4 6.2L10 14.9 4.4 18l1.4-6.2L1 7.5l6.4-.6z"/></svg> 5.0</div>
-          <h3>Combo Astronauta Jr.</h3>
-          <p>Hamburguesa cheddar junior, papas chicas, bebida y sorpresa espacial</p>
+          <h3>Beacon Burger + Papas Fritas</h3>
+          <p>Pan de papa, carne, cheddar y bacon</p>
         </div>
         <div class="food-price">
-          <span class="amount">$ 11.500</span>
-          <button class="add-btn">+</button>
+          <span class="amount muted">Precio pronto</span>
+          <button class="add-btn" disabled>+</button>
+        </div>
+      </div>
+
+      <div class="food-row">
+        <div class="food-thumb bg-a">🍳</div>
+        <div class="food-info">
+          <h3>Americana Burger + Papas Fritas</h3>
+          <p>Pan de papa, carne, cheddar, bacon, huevo y papas</p>
+        </div>
+        <div class="food-price">
+          <span class="amount muted">Precio pronto</span>
+          <button class="add-btn" disabled>+</button>
         </div>
       </div>
 
     </div>
   </section>
 
-  <!-- populares -->
-  <section class="populares">
+  <!-- papas fritas -->
+  <section class="suggestions" id="papas">
     <div class="wrap">
       <div class="head">
-        <h2 class="section-title">Populares</h2>
-        <a class="see-all" href="#suggestions">Ver todo →</a>
+        <h2 class="section-title">Caja de Papas Fritas</h2>
+      </div>
+
+      <div class="food-row">
+        <div class="food-thumb bg-a">🍟</div>
+        <div class="food-info">
+          <h3>Papas fritas con sal + 2 toppings a elección</h3>
+          <p>Papas fritas, cheddar, bacon (verdeo y huevo frito opcional)</p>
+        </div>
+        <div class="food-price">
+          <span class="amount muted">Precio pronto</span>
+          <button class="add-btn" disabled>+</button>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- combos -->
+  <section class="populares" id="combos">
+    <div class="wrap">
+      <div class="head">
+        <h2 class="section-title">Combos</h2>
+      </div>
+      <div class="pop-grid pop-grid-2">
+
+        <div class="pop-card">
+          <div class="pop-thumb bg-b">🌌</div>
+          <h4>Combo Cosmos</h4>
+          <p>Cualquier hamburguesa del menú + papas fritas con cheddar y bacon</p>
+          <div class="bottom"><span class="amount muted">Precio pronto</span><button class="add-btn" disabled>+</button></div>
+        </div>
+
+        <div class="pop-card">
+          <div class="pop-thumb bg-c">🛸</div>
+          <h4>Combo Cosmos Duo</h4>
+          <p>2 combos Cosmos + 2 birras o Coca-Cola 1.5L</p>
+          <div class="bottom"><span class="amount muted">Precio pronto</span><button class="add-btn" disabled>+</button></div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- toppings -->
+  <section class="addons" id="toppings">
+    <div class="wrap">
+      <div class="head">
+        <h2 class="section-title">Toppings <span class="section-sub">(Salsas)</span></h2>
+      </div>
+      <div class="addon-row">
+        <div class="addon-pill">🥫 Barbacoa</div>
+        <div class="addon-pill">🥄 Mayonesa</div>
+        <div class="addon-pill">🧀 Cheddar</div>
+        <div class="addon-pill">🍅 Ketchup</div>
+        <div class="addon-pill">🧅 Cebolla crispy</div>
+        <div class="addon-pill">🥓 Bacon</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- extras -->
+  <section class="addons" id="extras">
+    <div class="wrap">
+      <div class="head">
+        <h2 class="section-title">Extras</h2>
+      </div>
+      <div class="addon-row">
+        <div class="addon-pill">🥩 Medallón de carne</div>
+        <div class="addon-pill">🍳 Huevo frito</div>
+        <div class="addon-pill">🧀 Baño de cheddar</div>
+        <div class="addon-pill">🥓 Bacon</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- bebidas -->
+  <section class="populares" id="bebidas">
+    <div class="wrap">
+      <div class="head">
+        <h2 class="section-title">Bebidas <span class="section-sub">1.5L</span></h2>
       </div>
       <div class="pop-grid">
 
         <div class="pop-card">
-          <span class="tag-promo">Efectivo -10%</span>
-          <div class="rating">★★★★★ 5.0</div>
-          <div class="pop-thumb bg-b">🍔</div>
-          <h4>(Efectivo) Triple Supernova</h4>
-          <p>Pan, carne x3, queso cheddar y papas</p>
-          <div class="bottom"><span class="amount">$ 12.500</span><button class="add-btn">+</button></div>
+          <div class="pop-thumb bg-d">🧃</div>
+          <h4>Manaos</h4>
+          <p>Pomelo, naranja o cola</p>
+          <div class="bottom"><span class="amount muted">Precio pronto</span><button class="add-btn" disabled>+</button></div>
         </div>
 
         <div class="pop-card">
-          <div class="rating">★★★★★ 5.0</div>
-          <div class="pop-thumb bg-e">👽</div>
-          <h4>Combo Astronauta Jr.</h4>
-          <p>Burger cheddar junior + papas chicas + sorpresa</p>
-          <div class="bottom"><span class="amount">$ 11.500</span><button class="add-btn">+</button></div>
+          <div class="pop-thumb bg-e">🥤</div>
+          <h4>Sprite</h4>
+          <p>Botella 1.5L</p>
+          <div class="bottom"><span class="amount muted">Precio pronto</span><button class="add-btn" disabled>+</button></div>
         </div>
 
         <div class="pop-card">
-          <div class="rating">★★★★★ 5.0</div>
-          <div class="pop-thumb bg-c">🥓</div>
-          <h4>Big Bang Bacon</h4>
-          <p>Carne, bacon crocante, cheddar y cebolla caramelizada</p>
-          <div class="bottom"><span class="amount">$ 10.200</span><button class="add-btn">+</button></div>
+          <div class="pop-thumb bg-c">🍊</div>
+          <h4>Fanta</h4>
+          <p>Botella 1.5L</p>
+          <div class="bottom"><span class="amount muted">Precio pronto</span><button class="add-btn" disabled>+</button></div>
         </div>
 
         <div class="pop-card">
-          <div class="rating">★★★★★ 5.0</div>
-          <div class="pop-thumb bg-a">🍟</div>
-          <h4>Vía Láctea</h4>
-          <p>Papas rústicas con cheddar fundido y panceta</p>
-          <div class="bottom"><span class="amount">$ 7.000</span><button class="add-btn">+</button></div>
+          <div class="pop-thumb bg-b">🥤</div>
+          <h4>Coca-Cola</h4>
+          <p>Botella 1.5L</p>
+          <div class="bottom"><span class="amount muted">Precio pronto</span><button class="add-btn" disabled>+</button></div>
         </div>
 
       </div>
@@ -618,7 +713,10 @@
         <div>
           <h5>Menú</h5>
           <ul>
-            <li>Promos</li><li>Burgers</li><li>Combo Astronauta</li><li>Bebidas</li>
+            <li><a href="#hamburguesas" style="color:inherit; text-decoration:none;">Hamburguesas</a></li>
+            <li><a href="#papas" style="color:inherit; text-decoration:none;">Papas Fritas</a></li>
+            <li><a href="#combos" style="color:inherit; text-decoration:none;">Combos</a></li>
+            <li><a href="#bebidas" style="color:inherit; text-decoration:none;">Bebidas</a></li>
           </ul>
         </div>
         <div>

@@ -917,8 +917,8 @@
     b4:{name:'Beacon Burger + Papas Fritas', emoji:'🥓', type:'burger', prices:{simple:9500, doble:12500, triple:15500}, ingredients:['Pan de papa','Carne','Cheddar','Bacon']},
     b5:{name:'Americana Burger + Papas Fritas', emoji:'🍳', type:'burger', prices:{simple:null, doble:null, triple:null}, ingredients:['Pan de papa','Carne','Cheddar','Bacon','Huevo','Papas']},
     p1:{name:'Caja de Papas Fritas', emoji:'🍟', type:'papas', prices:{simple:null, doble:null, triple:null}, ingredients:['Papas fritas con sal','Cheddar','Bacon'], note:'Elegí hasta 2 toppings incluidos, el resto tiene costo extra.'},
-    c1:{name:'Combo Cosmos', emoji:'🌌', type:'combo', prices:{simple:null, doble:null, triple:null}, ingredients:['Hamburguesa a elección','Papas fritas','Cheddar','Bacon'], burgerChoice:true},
-    c2:{name:'Combo Cosmos Duo', emoji:'🛸', type:'combo', prices:{simple:null, doble:null, triple:null}, ingredients:['2 hamburguesas a elección','2 papas fritas','2 birras o Coca-Cola 1.5L'], burgerChoice:true, duo:true},
+    c1:{name:'Combo Cosmos', emoji:'🌌', type:'combo', price:16000, ingredients:['Hamburguesa a elección','Papas fritas','Cheddar','Bacon'], burgerChoice:true},
+    c2:{name:'Combo Cosmos Duo', emoji:'🛸', type:'combo', price:32000, ingredients:['2 hamburguesas a elección','2 papas fritas'], burgerChoice:true, duo:true, drinkChoice:['2 birras','Coca-Cola 1.5L']},
     d1:{name:'Manaos 1.5L', emoji:'🧃', type:'bebida', price:null, flavorChoice:['Pomelo','Naranja','Cola']},
     d2:{name:'Sprite 1.5L', emoji:'🥤', type:'bebida', price:null},
     d3:{name:'Fanta 1.5L', emoji:'🍊', type:'bebida', price:null},
@@ -966,6 +966,7 @@
       burger: p.burgerChoice ? BURGER_NAMES[0].id : null,
       burger2: p.duo ? BURGER_NAMES[0].id : null,
       flavor: p.flavorChoice ? p.flavorChoice[0] : null,
+      drink: p.drinkChoice ? p.drinkChoice[0] : null,
     };
     renderModal();
     document.getElementById('modalOverlay').classList.add('open');
@@ -991,7 +992,7 @@
       </div>
       <div class="modal-body">`;
 
-    if(p.type === 'burger' || p.type === 'papas' || p.type === 'combo'){
+    if(p.type === 'burger' || p.type === 'papas'){
       html += `
         <div class="modal-section">
           <h4>Tamaño <span class="req">Elegí uno</span></h4>
@@ -1022,6 +1023,16 @@
           </select>
         </div>`;
       }
+    }
+
+    if(p.drinkChoice){
+      html += `
+        <div class="modal-section">
+          <h4>Bebida <span class="req">Elegí una</span></h4>
+          <select onchange="currentDraft.drink=this.value" style="width:100%; padding:12px; border-radius:12px; border:1.5px solid var(--light-3); font-family:inherit; font-size:14px; background:#fff;">
+            ${p.drinkChoice.map(f => `<option value="${f}">${f}</option>`).join('')}
+          </select>
+        </div>`;
     }
 
     if(p.flavorChoice){
@@ -1137,7 +1148,7 @@
   function confirmAddToCart(){
     const p = PRODUCTS[currentDraft.productId];
     let details = [];
-    if(currentDraft.size && (p.type==='burger'||p.type==='papas'||p.type==='combo')){
+    if(currentDraft.size && (p.type==='burger'||p.type==='papas')){
       details.push('Tamaño: ' + SIZES.find(s=>s.id===currentDraft.size).label);
     }
     if(p.burgerChoice){
@@ -1145,6 +1156,7 @@
       if(p.duo) details.push('Burger 2: ' + BURGER_NAMES.find(b=>b.id===currentDraft.burger2).name);
     }
     if(currentDraft.flavor) details.push('Sabor: ' + currentDraft.flavor);
+    if(currentDraft.drink) details.push('Bebida: ' + currentDraft.drink);
     if(currentDraft.removedIngredients.length) details.push('Sin: ' + currentDraft.removedIngredients.join(', '));
     if(currentDraft.toppings.length) details.push('Toppings: ' + currentDraft.toppings.map(id=>TOPPINGS.find(t=>t.id===id).name).join(', '));
     if(currentDraft.extras.length) details.push('Extras: ' + currentDraft.extras.map(id=>EXTRAS.find(e=>e.id===id).name).join(', '));

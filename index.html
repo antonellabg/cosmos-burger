@@ -999,7 +999,7 @@
             ${SIZES.map(s => `
               <div class="size-opt ${currentDraft.size===s.id?'selected':''}" onclick="setSize('${s.id}')">
                 <span class="label">${s.label}</span>
-                <span class="note">${s.note}</span>
+                <span class="note">${sizeNote(p, s.id)}</span>
               </div>`).join('')}
           </div>
         </div>`;
@@ -1095,6 +1095,20 @@
   }
 
   function setSize(id){ currentDraft.size = id; renderModal(); }
+
+  /* nota debajo de cada tamaño: si es el elegido, muestra cantidad de medallones;
+     si no, muestra cuánto más (o menos) cuesta respecto al tamaño elegido */
+  function sizeNote(p, sizeId){
+    const s = SIZES.find(x=>x.id===sizeId);
+    if(sizeId === currentDraft.size) return s.note;
+    if(!p.prices) return s.note;
+    const selectedPrice = p.prices[currentDraft.size];
+    const thisPrice = p.prices[sizeId];
+    if(selectedPrice == null || thisPrice == null) return s.note;
+    const diff = thisPrice - selectedPrice;
+    if(diff === 0) return s.note;
+    return diff > 0 ? `+ ${money(diff)} más` : `${money(Math.abs(diff))} menos`;
+  }
   function toggleIngredient(name){
     const i = currentDraft.removedIngredients.indexOf(name);
     if(i>-1) currentDraft.removedIngredients.splice(i,1); else currentDraft.removedIngredients.push(name);
@@ -1242,8 +1256,7 @@
       if(!p) return;
       let display = null;
       if(p.prices){
-        const vals = Object.values(p.prices).filter(v => v != null);
-        if(vals.length) display = 'Desde ' + money(Math.min(...vals));
+        if(p.prices.simple != null) display = money(p.prices.simple);
       } else if(p.price != null){
         display = money(p.price);
       }

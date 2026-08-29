@@ -902,9 +902,9 @@
     {id:'baconextra', name:'Bacon extra', icon:'🥓', price:null},
   ];
   const SIZES = [
-    {id:'simple', label:'Simple', note:'1 medallón'},
-    {id:'doble', label:'Doble', note:'2 medallones'},
-    {id:'triple', label:'Triple', note:'3 medallones'},
+    {id:'simple', label:'Simple'},
+    {id:'doble', label:'Doble'},
+    {id:'triple', label:'Triple'},
   ];
 
   /* precios: null = todavía no cargado (se muestra "Precio pronto").
@@ -912,9 +912,9 @@
      Para productos sin tamaño (bebidas), usá el campo "price" directo. */
   const PRODUCTS = {
     b1:{name:'Caramel Burger + Papas Fritas', emoji:'🍔', type:'burger', prices:{simple:10500, doble:13500, triple:16500}, ingredients:['Pan de papa','Cebolla caramelizada','Bacon','Barbacoa','Cheddar']},
-    b2:{name:'Crispy Burger + Papas Fritas', emoji:'🍔', type:'burger', prices:{simple:null, doble:null, triple:null}, ingredients:['Pan de papa','Cebolla crispy','Barbacoa','Cheddar','Carne']},
-    b3:{name:'Cheese Burger + Papas Fritas', emoji:'🧀', type:'burger', prices:{simple:null, doble:null, triple:null}, ingredients:['Pan de papa','Carne','Cheddar']},
-    b4:{name:'Beacon Burger + Papas Fritas', emoji:'🥓', type:'burger', prices:{simple:null, doble:null, triple:null}, ingredients:['Pan de papa','Carne','Cheddar','Bacon']},
+    b2:{name:'Crispy Burger + Papas Fritas', emoji:'🍔', type:'burger', prices:{simple:8500, doble:11500, triple:14500}, ingredients:['Pan de papa','Cebolla crispy','Barbacoa','Cheddar','Carne']},
+    b3:{name:'Cheese Burger + Papas Fritas', emoji:'🧀', type:'burger', prices:{simple:8000, doble:11000, triple:14000}, ingredients:['Pan de papa','Carne','Cheddar']},
+    b4:{name:'Beacon Burger + Papas Fritas', emoji:'🥓', type:'burger', prices:{simple:9500, doble:12500, triple:15500}, ingredients:['Pan de papa','Carne','Cheddar','Bacon']},
     b5:{name:'Americana Burger + Papas Fritas', emoji:'🍳', type:'burger', prices:{simple:null, doble:null, triple:null}, ingredients:['Pan de papa','Carne','Cheddar','Bacon','Huevo','Papas']},
     p1:{name:'Caja de Papas Fritas', emoji:'🍟', type:'papas', prices:{simple:null, doble:null, triple:null}, ingredients:['Papas fritas con sal','Cheddar','Bacon'], note:'Elegí hasta 2 toppings incluidos, el resto tiene costo extra.'},
     c1:{name:'Combo Cosmos', emoji:'🌌', type:'combo', prices:{simple:null, doble:null, triple:null}, ingredients:['Hamburguesa a elección','Papas fritas','Cheddar','Bacon'], burgerChoice:true},
@@ -1099,14 +1099,13 @@
   /* nota debajo de cada tamaño: si es el elegido, muestra cantidad de medallones;
      si no, muestra cuánto más (o menos) cuesta respecto al tamaño elegido */
   function sizeNote(p, sizeId){
-    const s = SIZES.find(x=>x.id===sizeId);
-    if(sizeId === currentDraft.size) return s.note;
-    if(!p.prices) return s.note;
+    if(sizeId === currentDraft.size) return '';
+    if(!p.prices) return '';
     const selectedPrice = p.prices[currentDraft.size];
     const thisPrice = p.prices[sizeId];
-    if(selectedPrice == null || thisPrice == null) return s.note;
+    if(selectedPrice == null || thisPrice == null) return '';
     const diff = thisPrice - selectedPrice;
-    if(diff === 0) return s.note;
+    if(diff === 0) return '';
     return diff > 0 ? `+ ${money(diff)} más` : `${money(Math.abs(diff))} menos`;
   }
   function toggleIngredient(name){

@@ -1003,11 +1003,9 @@
   /* ===================== PRODUCT DATA ===================== */
   /* precio: null = todavía no cargado (se muestra "Precio pronto").
      Cuando tengas los precios reales, reemplazá cada "price: null" por el monto en pesos (ej: price: 9000). */
-  const TOPPINGS = [
+  const EXTRAS = [
     {id:'cheddar', name:'Cheddar', icon:'🧀', price:2300},
     {id:'bacon', name:'Bacon', icon:'🥓', price:2300},
-  ];
-  const EXTRAS = [
     {id:'barbacoa', name:'Barbacoa', icon:'🥫', price:1500},
     {id:'mayonesa', name:'Mayonesa', icon:'🥄', price:1500},
     {id:'ketchup', name:'Ketchup', icon:'🍅', price:1500},
@@ -1046,7 +1044,7 @@
   }
 
   /* calcula el precio unitario de un item si TODOS sus componentes tienen precio cargado; si falta alguno, devuelve null */
-  function computeUnitPrice(productId, sizeId, toppingIds, extraIds){
+  function computeUnitPrice(productId, sizeId, extraIds){
     const p = PRODUCTS[productId];
     let total;
     if(p.prices){
@@ -1055,11 +1053,6 @@
     } else {
       if(p.price == null) return null;
       total = p.price;
-    }
-    for(const tid of toppingIds){
-      const t = TOPPINGS.find(x=>x.id===tid);
-      if(t.price == null) return null;
-      total += t.price;
     }
     for(const eid of extraIds){
       const e = EXTRAS.find(x=>x.id===eid);
@@ -1077,7 +1070,7 @@
     const p = PRODUCTS[id];
     currentDraft = {
       productId:id, qty:1, size:'simple',
-      removedIngredients:[], toppings:[], extras:[],
+      removedIngredients:[], extras:[],
       burger: p.burgerChoice ? BURGER_NAMES[0].id : null,
       burger2: p.duo ? BURGER_NAMES[0].id : null,
       flavor: p.flavorChoice ? p.flavorChoice[0] : null,
@@ -1188,17 +1181,6 @@
     if(p.type === 'burger' || p.type === 'papas' || p.type === 'combo'){
       html += `
         <div class="modal-section">
-          <h4>Toppings <span class="opt">Opcional</span></h4>
-          ${TOPPINGS.map(t => `
-            <div class="addon-check-row">
-              <label>
-                <input type="checkbox" onchange="toggleTopping('${t.id}')">
-                ${t.icon} ${t.name}
-              </label>
-              <span class="addon-price">${t.price!=null ? '+ '+money(t.price) : 'Precio pronto'}</span>
-            </div>`).join('')}
-        </div>
-        <div class="modal-section">
           <h4>Extras <span class="opt">Opcional</span></h4>
           ${EXTRAS.map(e => `
             <div class="addon-check-row">
@@ -1249,11 +1231,6 @@
     const i = currentDraft.removedIngredients.indexOf(name);
     if(i>-1) currentDraft.removedIngredients.splice(i,1); else currentDraft.removedIngredients.push(name);
   }
-  function toggleTopping(id){
-    const i = currentDraft.toppings.indexOf(id);
-    if(i>-1) currentDraft.toppings.splice(i,1); else currentDraft.toppings.push(id);
-    updateModalPriceNote();
-  }
 
   function toggleExtra(id){
     const i = currentDraft.extras.indexOf(id);
@@ -1268,7 +1245,7 @@
   function updateModalPriceNote(){
     const note = document.getElementById('modalPriceNote');
     if(!note) return;
-    const unit = computeUnitPrice(currentDraft.productId, currentDraft.size, currentDraft.toppings, currentDraft.extras);
+    const unit = computeUnitPrice(currentDraft.productId, currentDraft.size, currentDraft.extras);
     note.textContent = unit!=null ? money(unit*currentDraft.qty) : 'Precio a confirmar';
   }
 
@@ -1291,10 +1268,9 @@
       details.push('Bebida: ' + drinkLabel);
     }
     if(currentDraft.removedIngredients.length) details.push('Sin: ' + currentDraft.removedIngredients.join(', '));
-    if(currentDraft.toppings.length) details.push('Toppings: ' + currentDraft.toppings.map(id=>TOPPINGS.find(t=>t.id===id).name).join(', '));
     if(currentDraft.extras.length) details.push('Extras: ' + currentDraft.extras.map(id=>EXTRAS.find(e=>e.id===id).name).join(', '));
 
-    const unitPrice = computeUnitPrice(currentDraft.productId, currentDraft.size, currentDraft.toppings, currentDraft.extras);
+    const unitPrice = computeUnitPrice(currentDraft.productId, currentDraft.size, currentDraft.extras);
 
     cart.push({
       productId: currentDraft.productId,

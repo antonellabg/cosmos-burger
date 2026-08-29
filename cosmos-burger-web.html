@@ -900,12 +900,14 @@
   /* precio: null = todavía no cargado (se muestra "Precio pronto").
      Cuando tengas los precios reales, reemplazá cada "price: null" por el monto en pesos (ej: price: 9000). */
   const TOPPINGS = [
-    {id:'barbacoa', name:'Barbacoa', icon:'🥫', price:null},
-    {id:'mayonesa', name:'Mayonesa', icon:'🥄', price:null},
-    {id:'cheddar', name:'Cheddar', icon:'🧀', price:null},
-    {id:'ketchup', name:'Ketchup', icon:'🍅', price:null},
-    {id:'cebollacrispy', name:'Cebolla crispy', icon:'🧅', price:null},
-    {id:'bacon', name:'Bacon', icon:'🥓', price:null},
+    {id:'cheddar', name:'Cheddar', icon:'🧀', price:2300},
+    {id:'cebollacrispy', name:'Cebolla crispy', icon:'🧅', price:2300},
+    {id:'bacon', name:'Bacon', icon:'🥓', price:2300},
+  ];
+  const DIPS = [
+    {id:'barbacoa', name:'Barbacoa', icon:'🥫', price:1500},
+    {id:'mayonesa', name:'Mayonesa', icon:'🥄', price:1500},
+    {id:'ketchup', name:'Ketchup', icon:'🍅', price:1500},
   ];
   const EXTRAS = [
     {id:'medallon', name:'Medallón de carne extra', icon:'🥩', price:null},
@@ -944,7 +946,7 @@
   }
 
   /* calcula el precio unitario de un item si TODOS sus componentes tienen precio cargado; si falta alguno, devuelve null */
-  function computeUnitPrice(productId, sizeId, toppingIds, extraIds){
+  function computeUnitPrice(productId, sizeId, toppingIds, extraIds, dipIds){
     const p = PRODUCTS[productId];
     let total;
     if(p.prices){
@@ -964,6 +966,11 @@
       if(e.price == null) return null;
       total += e.price;
     }
+    for(const did of (dipIds||[])){
+      const d = DIPS.find(x=>x.id===did);
+      if(d.price == null) return null;
+      total += d.price;
+    }
     return total;
   }
 
@@ -975,7 +982,7 @@
     const p = PRODUCTS[id];
     currentDraft = {
       productId:id, qty:1, size:'simple',
-      removedIngredients:[], toppings:[], extras:[],
+      removedIngredients:[], toppings:[], extras:[], dips:[],
       burger: p.burgerChoice ? BURGER_NAMES[0].id : null,
       burger2: p.duo ? BURGER_NAMES[0].id : null,
       flavor: p.flavorChoice ? p.flavorChoice[0] : null,
@@ -1093,7 +1100,18 @@
                 <input type="checkbox" onchange="toggleTopping('${t.id}')">
                 ${t.icon} ${t.name}
               </label>
-              <span class="addon-price">Precio pronto</span>
+              <span class="addon-price">${t.price!=null ? '+ '+money(t.price) : 'Precio pronto'}</span>
+            </div>`).join('')}
+        </div>
+        <div class="modal-section">
+          <h4>Dips <span class="opt">Opcional</span></h4>
+          ${DIPS.map(d => `
+            <div class="addon-check-row">
+              <label>
+                <input type="checkbox" onchange="toggleDip('${d.id}')">
+                ${d.icon} ${d.name}
+              </label>
+              <span class="addon-price">${d.price!=null ? '+ '+money(d.price) : 'Precio pronto'}</span>
             </div>`).join('')}
         </div>
         <div class="modal-section">
@@ -1104,7 +1122,7 @@
                 <input type="checkbox" onchange="toggleExtra('${e.id}')">
                 ${e.icon} ${e.name}
               </label>
-              <span class="addon-price">Precio pronto</span>
+              <span class="addon-price">${e.price!=null ? '+ '+money(e.price) : 'Precio pronto'}</span>
             </div>`).join('')}
         </div>`;
     }
@@ -1152,6 +1170,11 @@
     if(i>-1) currentDraft.toppings.splice(i,1); else currentDraft.toppings.push(id);
     updateModalPriceNote();
   }
+  function toggleDip(id){
+    const i = currentDraft.dips.indexOf(id);
+    if(i>-1) currentDraft.dips.splice(i,1); else currentDraft.dips.push(id);
+    updateModalPriceNote();
+  }
   function toggleExtra(id){
     const i = currentDraft.extras.indexOf(id);
     if(i>-1) currentDraft.extras.splice(i,1); else currentDraft.extras.push(id);
@@ -1165,7 +1188,7 @@
   function updateModalPriceNote(){
     const note = document.getElementById('modalPriceNote');
     if(!note) return;
-    const unit = computeUnitPrice(currentDraft.productId, currentDraft.size, currentDraft.toppings, currentDraft.extras);
+    const unit = computeUnitPrice(currentDraft.productId, currentDraft.size, currentDraft.toppings, currentDraft.extras, currentDraft.dips);
     note.textContent = unit!=null ? money(unit*currentDraft.qty) : 'Precio a confirmar';
   }
 
@@ -1189,9 +1212,10 @@
     }
     if(currentDraft.removedIngredients.length) details.push('Sin: ' + currentDraft.removedIngredients.join(', '));
     if(currentDraft.toppings.length) details.push('Toppings: ' + currentDraft.toppings.map(id=>TOPPINGS.find(t=>t.id===id).name).join(', '));
+    if(currentDraft.dips.length) details.push('Dips: ' + currentDraft.dips.map(id=>DIPS.find(d=>d.id===id).name).join(', '));
     if(currentDraft.extras.length) details.push('Extras: ' + currentDraft.extras.map(id=>EXTRAS.find(e=>e.id===id).name).join(', '));
 
-    const unitPrice = computeUnitPrice(currentDraft.productId, currentDraft.size, currentDraft.toppings, currentDraft.extras);
+    const unitPrice = computeUnitPrice(currentDraft.productId, currentDraft.size, currentDraft.toppings, currentDraft.extras, currentDraft.dips);
 
     cart.push({
       productId: currentDraft.productId,

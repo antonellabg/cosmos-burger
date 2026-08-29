@@ -663,7 +663,7 @@
       <div class="food-row">
         <div class="food-thumb bg-d">🥓</div>
         <div class="food-info">
-          <h3>Beacon Burger + Papas Fritas</h3>
+          <h3>Bacon Burger + Papas Fritas</h3>
           <p>Pan de papa, carne, cheddar y bacon</p>
         </div>
         <div class="food-price">
@@ -697,12 +697,24 @@
       <div class="food-row">
         <div class="food-thumb bg-a">🍟</div>
         <div class="food-info">
-          <h3>Papas fritas con sal + 2 toppings a elección</h3>
+          <h3>Papas fritas + 2 toppings a elección</h3>
           <p>Papas fritas, cheddar, bacon (verdeo y huevo frito opcional)</p>
         </div>
         <div class="food-price">
           <span class="amount muted" data-product="p1">Precio pronto</span>
           <button class="add-btn" onclick="openCustomize('p1')">+</button>
+        </div>
+      </div>
+
+      <div class="food-row">
+        <div class="food-thumb bg-e">🧀</div>
+        <div class="food-info">
+          <h3>Papas fritas con cheddar y bacon</h3>
+          <p>Papas fritas, cheddar y bacon</p>
+        </div>
+        <div class="food-price">
+          <span class="amount muted" data-product="p2">Precio pronto</span>
+          <button class="add-btn" onclick="openCustomize('p2')">+</button>
         </div>
       </div>
 
@@ -727,7 +739,7 @@
         <div class="pop-card">
           <div class="pop-thumb bg-c">🛸</div>
           <h4>Combo Cosmos Duo</h4>
-          <p>2 combos Cosmos + 2 birras o Coca-Cola 1.5L</p>
+          <p>2 combos Cosmos + 2 birras o gaseosa 1.5L</p>
           <div class="bottom"><span class="amount muted" data-product="c2">Precio pronto</span><button class="add-btn" onclick="openCustomize('c2')">+</button></div>
         </div>
 
@@ -914,9 +926,10 @@
     b1:{name:'Caramel Burger + Papas Fritas', emoji:'🍔', type:'burger', prices:{simple:10500, doble:13500, triple:16500}, ingredients:['Pan de papa','Cebolla caramelizada','Bacon','Barbacoa','Cheddar']},
     b2:{name:'Crispy Burger + Papas Fritas', emoji:'🍔', type:'burger', prices:{simple:8500, doble:11500, triple:14500}, ingredients:['Pan de papa','Cebolla crispy','Barbacoa','Cheddar','Carne']},
     b3:{name:'Cheese Burger + Papas Fritas', emoji:'🧀', type:'burger', prices:{simple:8000, doble:11000, triple:14000}, ingredients:['Pan de papa','Carne','Cheddar']},
-    b4:{name:'Beacon Burger + Papas Fritas', emoji:'🥓', type:'burger', prices:{simple:9500, doble:12500, triple:15500}, ingredients:['Pan de papa','Carne','Cheddar','Bacon']},
+    b4:{name:'Bacon Burger + Papas Fritas', emoji:'🥓', type:'burger', prices:{simple:9500, doble:12500, triple:15500}, ingredients:['Pan de papa','Carne','Cheddar','Bacon']},
     b5:{name:'Americana Burger + Papas Fritas', emoji:'🍳', type:'burger', prices:{simple:10000, doble:13000, triple:16000}, ingredients:['Pan de papa','Carne','Cheddar','Bacon','Huevo','Papas']},
-    p1:{name:'Caja de Papas Fritas', emoji:'🍟', type:'papas', prices:{simple:null, doble:null, triple:null}, ingredients:['Papas fritas con sal','Cheddar','Bacon'], note:'Elegí hasta 2 toppings incluidos, el resto tiene costo extra.'},
+    p1:{name:'Papas fritas + 2 toppings a elección', emoji:'🍟', type:'papas', price:10000, ingredients:['Papas fritas','Cheddar','Bacon'], note:'Elegí hasta 2 toppings incluidos, el resto tiene costo extra.'},
+    p2:{name:'Papas fritas con cheddar y bacon', emoji:'🍟', type:'papas', price:12500, ingredients:['Papas fritas','Cheddar','Bacon']},
     c1:{name:'Combo Cosmos', emoji:'🌌', type:'combo', price:16000, ingredients:['Hamburguesa a elección','Papas fritas','Cheddar','Bacon'], burgerChoice:true},
     c2:{name:'Combo Cosmos Duo', emoji:'🛸', type:'combo', price:32000, ingredients:['2 hamburguesas a elección','2 papas fritas'], burgerChoice:true, duo:true, drinkChoice:{options:['2 birras','Gaseosa 1.5L'], gaseosaFlavors:['Coca-Cola','Fanta','Sprite']}},
     d1:{name:'Manaos 1.5L', emoji:'🧃', type:'bebida', price:null, flavorChoice:['Pomelo','Naranja','Cola']},
@@ -993,7 +1006,7 @@
       </div>
       <div class="modal-body">`;
 
-    if(p.type === 'burger' || p.type === 'papas'){
+    if(p.type === 'burger'){
       html += `
         <div class="modal-section">
           <h4>Tamaño <span class="req">Elegí uno</span></h4>
@@ -1159,7 +1172,7 @@
   function confirmAddToCart(){
     const p = PRODUCTS[currentDraft.productId];
     let details = [];
-    if(currentDraft.size && (p.type==='burger'||p.type==='papas')){
+    if(currentDraft.size && p.type==='burger'){
       details.push('Tamaño: ' + SIZES.find(s=>s.id===currentDraft.size).label);
     }
     if(p.burgerChoice){

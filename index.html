@@ -7,6 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Baloo+2:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://db.onlinewebfonts.com/c/fea031a5eb1f633a622138fe25624d42?family=Genty+Sans" rel="stylesheet" type="text/css">
 <style>
   :root{
     --red:#D62300;
@@ -53,20 +54,6 @@
     font-family:var(--font-display); font-weight:700; color:var(--orange); font-size:15px;
     display:flex; align-items:center; gap:4px;
   }
-
-  /* ---------- top utility strip ---------- */
-  .topstrip{
-    background: repeating-conic-gradient(var(--imago-orange) 0% 25%, #ffffff 0% 50%) 0 0/20px 20px;
-    color: var(--ink); font-family:var(--font-body);
-    font-size:13px; letter-spacing:.02em;
-    border-bottom:3px solid var(--imago-orange);
-  }
-  .topstrip .wrap{display:flex; justify-content:space-between; align-items:center; padding:8px 40px;}
-  .topstrip .wrap > span{
-    background:rgba(255,255,255,.85); padding:5px 14px; border-radius:100px;
-    font-weight:600; box-shadow:0 1px 3px rgba(80,25,2,.12);
-  }
-  .topstrip .stars{color:var(--red); letter-spacing:2px;}
 
   /* ---------- header ---------- */
   header.main{
@@ -353,7 +340,7 @@
     -webkit-background-clip:text; background-clip:text; color:transparent;
   }
   .hero-right p.tagline{
-    font-family:var(--font-body); font-size:16.5px; line-height:1.6; color:var(--ink-soft);
+    font-family:'Genty Sans', var(--font-body), sans-serif; font-size:16.5px; line-height:1.6; color:var(--ink-soft);
     max-width:460px; margin-bottom:26px;
   }
 
@@ -385,8 +372,8 @@
   .categories .head{display:flex; justify-content:space-between; align-items:baseline; margin-bottom:22px;}
   .chip-row{display:flex; gap:14px; align-items:center;}
   .chip{
-    display:flex; align-items:center; gap:10px; background:#fff; border:1.5px solid #F0DCC4;
-    border-radius:100px; padding:8px 20px 8px 8px; flex:1; text-decoration:none;
+    display:flex; align-items:center; justify-content:center; gap:10px; background:#fff; border:1.5px solid #F0DCC4;
+    border-radius:100px; padding:14px 20px; flex:1; text-decoration:none;
     transition:transform .2s ease, box-shadow .2s ease, border-color .2s ease;
   }
   .chip:hover{transform:translateY(-3px); box-shadow:var(--shadow-card); border-color:var(--orange-light);}
@@ -563,11 +550,6 @@
   @media (max-width:640px){
     .wrap{padding:0 16px;}
 
-    /* topstrip */
-    .topstrip{border-bottom-width:2px;}
-    .topstrip .wrap{padding:7px 16px;}
-    .topstrip .wrap > span{font-size:11px; padding:4px 10px; white-space:normal; text-align:center;}
-
     /* header */
     header.main .wrap{height:60px;}
     .icon-btn{width:34px; height:34px;}
@@ -612,8 +594,7 @@
       -ms-overflow-style:none; scrollbar-width:none;
     }
     .chip-row::-webkit-scrollbar{display:none;}
-    .chip{flex:0 0 auto; padding:6px 16px 6px 6px;}
-    .chip .thumb{width:32px; height:32px; font-size:15px;}
+    .chip{flex:0 0 auto; padding:11px 18px;}
     .chip span{font-size:12.5px;}
     .chip-arrow{display:none;}
 
@@ -723,13 +704,6 @@
     </div>
   </aside>
 
-  <!-- top strip -->
-  <div class="topstrip">
-    <div class="wrap" style="justify-content:center;">
-      <span>🚀 Envíos a toda la ciudad · Pedí en minutos</span>
-    </div>
-  </div>
-
   <!-- header -->
   <header class="main">
     <div class="wrap">
@@ -781,10 +755,10 @@
         <a class="see-all" href="#hamburguesas">Ver menú completo →</a>
       </div>
       <div class="chip-row">
-        <a class="chip" href="#hamburguesas"><div class="thumb">🍔</div><span>Hamburguesas</span></a>
-        <a class="chip" href="#papas"><div class="thumb">🍟</div><span>Papas Fritas</span></a>
-        <a class="chip" href="#combos"><div class="thumb">🌌</div><span>Combos</span></a>
-        <a class="chip" href="#bebidas"><div class="thumb">🥤</div><span>Bebidas</span></a>
+        <a class="chip" href="#hamburguesas"><span>Hamburguesas</span></a>
+        <a class="chip" href="#papas"><span>Papas Fritas</span></a>
+        <a class="chip" href="#combos"><span>Combos</span></a>
+        <a class="chip" href="#bebidas"><span>Bebidas</span></a>
       </div>
     </div>
   </section>
